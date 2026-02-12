@@ -767,6 +767,74 @@
         <description>Autotune yaw axis.</description>
       </entry>
     </enum>
+        <!-- 1.1 拍照模式枚举 -->
+    <enum name="CAMERA_PHOTO_MODE">
+      <entry value="0" name="DEFAULT_PHOTO">Default photo mode</entry>
+      <entry value="1" name="IR_PHOTO">Infrared photo</entry>
+      <entry value="2" name="VISIBLE_PHOTO">Visible light photo</entry>
+      <entry value="3" name="IR_VISIBLE_PHOTO">IR + Visible light photo</entry>
+    </enum>
+
+    <!-- 1.2 录像模式枚举 -->
+    <enum name="CAMERA_VIDEO_MODE">
+      <entry value="0x00" name="DEFAULT_VIDEO">IR Visible video</entry>
+      <entry value="0x01" name="IR_VIDEO">Infrared video (640x512)</entry>
+      <entry value="0x02" name="VISIBLE_VIDEO">Visible video (4000x3000)</entry>
+      <entry value="0x03" name="IR_VISIBLE_VIDEO">IR + Visible video</entry>
+      <entry value="0x04" name="STREAM_RECORD">Video stream recording (1920x1080)</entry>
+    </enum>
+
+    <!-- 1.3 拍照功能设置枚举 -->
+    <enum name="CAMERA_PHOTO_FUNCTION">
+      <entry value="0x00" name="SINGLE_SHOT">Single shot</entry>
+      <entry value="0x01" name="BURST_SHOT">Burst shot (3/5 images)</entry>
+      <entry value="0x02" name="DELAY_SHOT">Delay shot</entry>
+    </enum>
+
+    <!-- 1.4 拍照指令枚举 -->
+    <enum name="CAMERA_PHOTO_COMMAND_ENUM">
+      <entry value="0x00" name="START_SINGLE_SHOT">Start single shot</entry>
+      <entry value="0x01" name="STOP_BURST_SHOT">Stop burst shot</entry>
+    </enum>
+
+    <!-- 1.5 录像指令枚举 -->
+    <enum name="CAMERA_VIDEO_COMMAND_ENUM">
+      <entry value="0x01" name="START_VIDEO">Start recording</entry>
+      <entry value="0x02" name="STOP_VIDEO">Stop recording</entry>
+    </enum>
+
+    <!-- 1.6 变倍控制枚举 -->
+    <enum name="CAMERA_ZOOM_CONTROL">
+      <entry value="0x00" name="CONTINUOUS_ZOOM_IN">Continuous zoom in</entry>
+      <entry value="0x01" name="CONTINUOUS_ZOOM_OUT">Continuous zoom out</entry>
+      <entry value="0x02" name="STOP_ZOOM">Stop zoom</entry>
+      <entry value="0x03" name="ZOOM_IN">Single zoom in</entry>
+      <entry value="0x04" name="ZOOM_OUT">Single zoom out</entry>
+    </enum>
+
+    <!-- 1.7 可见光分辨率枚举 -->
+    <enum name="CAMERA_PHOTO_RESOLUTION">
+      <entry value="0x14" name="RES_8000X6000">8000x6000</entry>
+      <entry value="0x15" name="RES_4000X3000">4000x3000</entry>
+      <entry value="0x16" name="RES_5160X3890">5160x3890</entry>
+      <entry value="0x17" name="RES_5664X4248">5664x4248</entry>
+    </enum>
+
+    <!-- 1.8 视频码率枚举 -->
+    <enum name="CAMERA_VIDEO_BITRATE">
+      <entry value="1" name="BITRATE_1M">1 Mbps</entry>
+      <entry value="2" name="BITRATE_1_5M">1.5 Mbps</entry>
+      <entry value="3" name="BITRATE_2M">2 Mbps</entry>
+      <entry value="4" name="BITRATE_4M">4 Mbps</entry>
+      <entry value="5" name="BITRATE_8M">8 Mbps</entry>
+      <entry value="6" name="BITRATE_12M">12 Mbps</entry>
+    </enum>
+
+    <!-- 1.9 视频编码枚举 -->
+    <enum name="CAMERA_VIDEO_ENCODING">
+      <entry value="0" name="H264">H.264 encoding</entry>
+      <entry value="1" name="H265">H.265 encoding</entry>
+    </enum>
     <!-- The MAV_CMD enum entries describe either: -->
     <!--  * the data payload of mission items (as used in the MISSION_ITEM_INT message) -->
     <!--  * the data payload of mavlink commands (as used in the COMMAND_INT and COMMAND_LONG messages) -->
@@ -1721,6 +1789,10 @@
         <description>Jump to the matching tag in the mission list. Repeat this action for the specified number of times. A mission should contain a single matching tag for each jump. If this is not the case then a jump to a missing tag should complete the mission, and a jump where there are multiple matching tags should always select the one with the lowest mission sequence number.</description>
         <param index="1" label="Tag" minValue="0" increment="1">Target tag to jump to.</param>
         <param index="2" label="Repeat" minValue="0" increment="1">Repeat count.</param>
+      </entry>
+      <entry value="700" name="MAV_CMD_DO_MOUNT_MODE_SET" hasLocation="false" isDestination="false">
+        <description>Set gimbal mount operating mode</description>
+        <param index="1" label="Tag" minValue="1" increment="1">1: Follow mode, 2: Lock mode</param>
       </entry>
       <!-- entry value 900 reserved for MAV_CMD_PARAM_TRANSACTION (development.xml) -->
       <entry value="1000" name="MAV_CMD_DO_GIMBAL_MANAGER_PITCHYAW" hasLocation="false" isDestination="false">
@@ -4262,6 +4334,20 @@
         <description>Safety switch is NOT engaged and motors, propellers and other actuators should be considered active.</description>
       </entry>
     </enum>
+  <enum name="CAM_MODE">
+      <entry value="0" name="CAM_MODE_PHOTO"><description>Photo Mode</description>
+      </entry>
+      <entry value="1" name="CAM_MODE_VIDEO"><description>Video Mode</description>
+      </entry>
+    </enum>
+  <enum name="SD_STATUS">
+      <entry value="0" name="SD_NORMAL"><description>Normal</description>
+      </entry>
+      <entry value="1" name="SD_ERROR"><description>Error</description>
+      </entry>
+      <entry value="2" name="SD_SLOW"><description>Slow Card</description>
+      </entry>
+    </enum>    
   </enums>
   <messages>
     <message id="1" name="SYS_STATUS">
@@ -6572,6 +6658,70 @@
       <field type="int16_t" name="temperature" units="degC">Temperature of the motor. INT16_MAX if unknown</field>
       <field type="uint32_t" name="status" display="bitmask" enum="MAV_WINCH_STATUS_FLAG">Status flags</field>
     </message>
+      <!-- Custom message ID range: 12000-12800 (avoid conflict with standard messages) -->
+  <!-- Camera system status feedback (1Hz) -->
+  <message id="12000" name="CAMERA_SYS_STATUS">
+      <description>Camera system status feedback (photo mode, SD card info, etc.)</description>
+      <field type="uint8_t" name="cam_mode" enum="CAM_MODE">0:Photo Mode, 1:Video Mode</field>
+      <field type="uint8_t" name="resolution" enum="RESOLUTION">0:1080P30, 1:720P30</field>
+      <field type="uint8_t" name="video_codec" enum="VIDEO_CODEC">0:H264, 1:H265</field>
+      <field type="uint8_t" name="stream_mode" enum="STREAM_MODE">
+          0:IR Streaming, 5:Visible Light Streaming, 7:Picture-in-Picture Streaming
+      </field>
+      <field type="uint8_t" name="bitrate" enum="BITRATE">
+          1:1Mbps, 2:1.5Mbps, 3:2Mbps, 4:4Mbps, 5:8Mbps, 6:12Mbps
+      </field>
+      <field type="uint8_t" name="capture_mode" enum="CAPTURE_MODE">
+          0:Single Shot, 1:Burst Shot, 2:Time-lapse
+      </field>
+      <field type="uint8_t" name="delay_time">Time-lapse interval (seconds)</field>
+      <field type="uint8_t" name="burst_count">Burst shot count (3 or 5)</field>
+      <field type="uint8_t" name="sd_status" enum="SD_STATUS">
+          0:Normal, 1:Error, 2:Slow Card, 3:Not Inserted, 4:Full, 5:Format Error
+      </field>
+      <field type="uint16_t" name="sd_total">SD card total capacity (0.1MB unit)</field>
+      <field type="uint16_t" name="sd_free">SD card free space (0.1MB unit)</field>
+      <field type="uint16_t" name="sd_used">SD card used space (0.1MB unit)</field>
+      <field type="uint8_t" name="reserved" reserved="true">Padding 0</field>
+  </message>
+  <!-- Infrared camera status feedback (5Hz) -->
+  <message id="12001" name="IR_CAMERA_STATUS">
+      <description>IR camera temperature and coordinate data</description>
+      <field type="int16_t" name="max_temp">Area max temperature (0.1℃)</field>
+      <field type="int16_t" name="min_temp">Area min temperature (0.1℃)</field>
+      <field type="int16_t" name="center_temp">Area center temperature (0.1℃)</field>
+      <field type="int16_t" name="point_temp">Point measurement temperature (0.1℃)</field>
+      <field type="int16_t" name="avg_temp">Area average temperature (0.1℃)</field>
+      <field type="uint16_t" name="max_x">Max temp X coordinate (pixel)</field>
+      <field type="uint16_t" name="max_y">Max temp Y coordinate (pixel)</field>
+      <field type="uint16_t" name="min_x">Min temp X coordinate (pixel)</field>
+      <field type="uint16_t" name="min_y">Min temp Y coordinate (pixel)</field>
+      <field type="uint16_t" name="center_x">Center X coordinate (pixel)</field>
+      <field type="uint16_t" name="center_y">Center Y coordinate (pixel)</field>
+      <field type="uint16_t" name="point_x">Point measurement X coordinate (pixel)</field>
+      <field type="uint16_t" name="point_y">Point measurement Y coordinate (pixel)</field>
+      <field type="uint8_t[4]" name="reserved" reserved="true">Padding 0</field>
+  </message>
+  <!-- Visible light camera status feedback (5Hz) -->
+  <message id="12002" name="VIS_CAMERA_STATUS">
+      <description>Visible light camera parameter status</description>
+      <field type="uint8_t" name="zoom_state" enum="ZOOM_STATE">
+          0:Zoom completed, 1:Zooming in progress
+      </field>
+      <field type="uint16_t" name="focal_length">Focal length (0.01mm unit)</field>
+      <field type="uint16_t" name="zoom_ratio">Hybrid zoom ratio (0.1x unit)</field>
+      <field type="uint8_t" name="ev_value" enum="EV_VALUE">
+          0:Auto, 10:+2, 16:+1, 22:0, 28:-1, 34:-2
+      </field>
+      <field type="uint16_t" name="iso">ISO value (0.1db unit)</field>
+      <field type="uint16_t" name="shutter">Electronic shutter (microseconds)</field>
+      <field type="uint8_t" name="ae_lock" enum="AE_LOCK">0:Off, 1:On</field>
+      <field type="uint8_t" name="focus_state" enum="FOCUS_STATE">
+          0:Focus completed, 1:Focusing in progress
+      </field>
+      <field type="uint16_t" name="fine_focus">Precise refocus distance</field>
+      <field type="uint8_t" name="reserved" reserved="true">Padding 0</field>
+  </message>
     <message id="12900" name="OPEN_DRONE_ID_BASIC_ID">
       <wip/>
       <!-- This message is work-in-progress and it can therefore change, and should NOT be used in stable production environments -->
@@ -6707,5 +6857,167 @@
       <field type="uint8_t" name="AmbHumidity" units="%">Ambient Humidity</field>
     </message>
     <!-- /////////////////////////////////////////////////////////////////// -->
+    <message id="20051" name="QH_CAMERA_STATUS">
+      <description>Feedback camera basic status and storage information</description>
+      <field type="uint32_t" name="time_boot_ms">System boot timestamp (ms)</field>
+      <field type="float" name="zoomLevel">Current zoom level (%)</field>
+      <field type="float" name="focusLevel">Current focus level (%)</field>
+      <field type="uint32_t" name="recording_time_ms">Recording duration (ms)</field>
+      <field type="float" name="available_capacity">Available storage (MiB)</field>
+      <field type="int32_t" name="image_count">Total captured images</field>
+      <field type="uint8_t" name="sd_status">
+        <description>SD card status: 
+          0=Normal, 1=Error, 2=Slow Card, 3=Not Inserted, 
+          4=Full, 5=Format Error
+        </description>
+      </field>
+      <field type="uint16_t" name="sd_total">SD card total capacity (0.1MB)</field>
+      <field type="uint16_t" name="sd_free">SD card free space (0.1MB)</field>
+      <field type="uint8_t" name="video_status">
+        <description>Video status: 
+          0=Stopped, 1=Recording, 2=Delay Waiting, 3=Time-lapse
+        </description>
+      </field>
+      <field type="uint8_t" name="capture_status">
+        <description>Capture status: 
+          0=Complete, 1=Single Shooting, 2=Burst Shooting, 
+          3=Delay Shooting, 4=Stopped, 5=Single Shooting, 6=Failed
+        </description>
+      </field>
+      <field type="uint8_t" name="mode_id">
+        <description>Camera mode: 0=Photo, 1=Video</description>
+      </field>
+      <field type="uint8_t" name="gimbal_device_id">Device ID</field>
+    </message>
+
+    <message id="20052" name="QH_CAMERA_SETTINGS">
+      <description>Camera settings feedback (request-triggered)</description>
+      <field type="uint32_t" name="time_boot_ms">System boot timestamp (ms)</field>
+      <field type="float" name="image_interval">Image capture interval (ms)</field>
+      <field type="uint8_t" name="capture_mode">
+        <description>Capture mode: 0=Single, 1=Burst, 2=Delay</description>
+      </field>
+      <field type="uint8_t" name="burst_count">Burst shot count (3 or 5)</field>
+      <field type="uint8_t" name="resolution">
+        <description>Video resolution: 0=1080P30, 1=720P30</description>
+      </field>
+      <field type="int8_t" name="video_codec">
+        <description>Video codec: 0=H264, 1=H265</description>
+      </field>
+      <field type="uint8_t" name="stream_mode">
+        <description>Stream mode: 0=Infrared, 5=Visible Light, 7=Split Screen</description>
+      </field>
+      <field type="uint8_t" name="bitrate">
+        <description>Bitrate (1=1Mbps, 2=1.5Mbps, ..., 6=12Mbps)</description>
+      </field>
+      <field type="uint8_t[12]" name="IP">Network IP address</field>
+      <field type="uint8_t" name="gimbal_device_id">Device ID</field>
+    </message>
+
+    <message id="20053" name="QH_IR_CAMERA_STATUS">
+      <description>Infrared camera temperature and coordinate feedback</description>
+      <field type="int16_t" name="max_temp">Max temperature (0.1℃)</field>
+      <field type="int16_t" name="min_temp">Min temperature (0.1℃)</field>
+      <field type="int16_t" name="center_temp">Center temperature (0.1℃)</field>
+      <field type="int16_t" name="point_temp">Point temperature (0.1℃)</field>
+      <field type="int16_t" name="avg_temp">Average temperature (0.1℃)</field>
+      <field type="uint16_t" name="max_x">Max temp X coordinate (pixels)</field>
+      <field type="uint16_t" name="max_y">Max temp Y coordinate (pixels)</field>
+      <field type="uint16_t" name="min_x">Min temp X coordinate (pixels)</field>
+      <field type="uint16_t" name="min_y">Min temp Y coordinate (pixels)</field>
+      <field type="uint16_t" name="center_x">Center X coordinate (pixels)</field>
+      <field type="uint16_t" name="center_y">Center Y coordinate (pixels)</field>
+      <field type="uint16_t" name="point_x">Point X coordinate (pixels)</field>
+      <field type="uint16_t" name="point_y">Point Y coordinate (pixels)</field>
+      <field type="uint8_t[4]" name="reserved">Reserved for future use</field>
+    </message>
+
+    <message id="20054" name="QH_VISIBLE_CAMERA_STATUS">
+      <description>Visible light camera status (5Hz reporting)</description>
+      <field type="uint8_t" name="zoom_status">
+        <description>Zoom status: 0x00=Complete, 0x01=Ongoing</description>
+      </field>
+      <field type="uint16_t" name="focal_length">Focal length (0.01mm)</field>
+      <field type="uint16_t" name="hybrid_zoom">Hybrid zoom ratio (0.1x)</field>
+      <field type="uint8_t" name="ev_value">
+        <description>Exposure compensation: 
+          0x00=Auto, 0x0A=+2, 0x10=+1, 0x16=0, 0x1C=-1, 0x23=-2
+        </description>
+      </field>
+      <field type="uint16_t" name="iso_value">ISO value (0.1dB)</field>
+      <field type="uint16_t" name="shutter_speed">Shutter speed (microseconds)</field>
+      <field type="uint8_t" name="ae_lock">
+        <description>AE lock status: 0x01=On, 0x02=Off</description>
+      </field>
+      <field type="uint8_t" name="focus_status">
+        <description>Focus status: 0x00=Complete, 0x01=Ongoing</description>
+      </field>
+      <field type="uint16_t" name="reposition_focal">Repositioning focal length</field>
+      <field type="uint8_t" name="reserved">Reserved</field>
+    </message>
+    <!-- 2.1 拍照/录像模式设置指令 (ID: 20060) -->
+    <message id="20060" name="QH_CAMERA_MODE_SETTING">
+      <description>Set camera photo/video mode</description>
+      <field type="uint8_t" name="gimbal_device_id">Target device ID</field>
+      <field type="uint8_t" name="mode">0=Photo mode, 1=Video mode</field>
+    </message>
+
+    <!-- 2.2 拍照参数设置指令 (ID: 20061) -->
+    <message id="20061" name="QH_CAMERA_PHOTO_PARAMS_SETTING">
+      <description>Configure camera photo parameters</description>
+      <field type="uint8_t" name="gimbal_device_id">Target device ID</field>
+      <field type="uint8_t" name="function">CAMERA_PHOTO_FUNCTION enum</field>
+      <field type="uint8_t" name="delay_interval">Delay interval (5/7/30/60s)</field>
+      <field type="uint8_t" name="burst_count">Burst shot count (3/5)</field>
+    </message>
+
+    <!-- 2.3 拍照指令 (ID: 20062) -->
+    <message id="20062" name="QH_CAMERA_PHOTO_COMMAND">
+      <description>Send camera photo command</description>
+      <field type="uint8_t" name="gimbal_device_id">Target device ID</field>
+      <field type="uint8_t" name="photo_mode">CAMERA_PHOTO_MODE enum</field>
+      <field type="uint8_t" name="command">CAMERA_PHOTO_COMMAND_ENUM enum</field>
+    </message>
+
+    <!-- 2.4 录像指令 (ID: 20063) -->
+    <message id="20063" name="QH_CAMERA_VIDEO_COMMAND">
+      <description>Control camera video recording</description>
+      <field type="uint8_t" name="gimbal_device_id">Target device ID</field>
+      <field type="uint8_t" name="video_mode">CAMERA_VIDEO_MODE enum</field>
+      <field type="uint8_t" name="command">CAMERA_VIDEO_COMMAND_ENUM enum</field>
+    </message>
+
+    <!-- 2.5 指定混合变倍指令 (ID: 20064) -->
+    <message id="20064" name="QH_CAMERA_MIXED_ZOOM_SETTING">
+      <description>Set specified hybrid zoom ratio</description>
+      <field type="uint8_t" name="gimbal_device_id">Target device ID</field>
+      <field type="uint8_t" name="command">0=Start</field>
+      <field type="uint16_t" name="zoom_ratio">Zoom ratio * 10 (1-160x)</field>
+    </message>
+    <!-- 2.6 连续混合变倍指令 (ID: 20065) -->
+    <message id="20065" name="QH_CAMERA_OPTICAL_ZOOM_SETTING">
+      <description>Continuous zoom control</description>
+      <field type="uint8_t" name="zoom_control">CAMERA_ZOOM_CONTROL enum</field>
+      <field type="uint8_t" name="device_id">Target device ID</field>
+    </message>
+
+    <!-- 2.8 精准复拍指令 (ID: 20066) -->
+    <message id="20066" name="QH_CAMERA_PRECISE_REPHOTO_COMMAND">
+      <description>Precise re-photo command</description>
+      <field type="uint8_t" name="gimbal_device_id">Target device ID</field>
+      <field type="uint8_t" name="photo_mode">CAMERA_PHOTO_MODE enum</field>
+      <field type="uint8_t" name="resolution">CAMERA_PHOTO_RESOLUTION enum</field>
+      <field type="uint16_t" name="zoom_ratio">Zoom ratio (0.1x)</field>
+      <field type="uint16_t" name="focal_length">Focal length</field>
+    </message>
+
+    <!-- 2.9 图像模式设置指令 (ID: 20067) -->
+    <message id="20067" name="QH_IMAGE_MODE_SETTING_COMMAND">
+      <description>Set camera image mode</description>
+      <field type="uint8_t" name="image_mode">
+        0x00=Infrared, 0x05=Zoom Visible, 0x06=Wide Visible, 0x07=Split Screen
+      </field>
+      <field type="uint8_t" name="reserved">Reserved for future use</field>
+    </message>
   </messages>
 </mavlink>
